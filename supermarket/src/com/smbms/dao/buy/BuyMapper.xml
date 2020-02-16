@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.dao.buy.BuyMapper">
+	<resultMap type="Buy" id="buyMap">
+	 	<id column="id" property="id"/>
+		<result column="buyCode" property="buyCode"/>
+		<result column="buyName" property="buyName"/>
+		<result column="productDesc" property="productDesc"/>
+		<result column="productUnit" property="productUnit"/>
+        <result column="productStandard" property="productStandard"/>
+        <result column="productUnitPrice" property="productUnitPrice"/>
+		<result column="productCount" property="productCount"/>
+		<result column="totalPrice" property="totalPrice"/>
+		<result column="createBy" property="createBy"/>
+		<result column="creationDate" property="creationDate"/>
+		<result column="isPayment" property="isPayment"/>
+		<result column="providerId" property="providerId"/>
+        <result column="disable" property="disable"/>
+	</resultMap>
+	<resultMap type="Buy" id="BPMap" extends="buyMap">
+		<association property="provider" javaType="Provider">
+		 	<id column="id" property="id"/>
+			<result column="proName" property="proName"/>
+		</association>
+	</resultMap>
+	<select id="findAllBuys" resultMap="BPMap">
+		select b.*,p.* from smbms_buy b,smbms_provider p where b.providerId=p.id and b.disable=1
+	</select>
+	<select id="findBuysById" resultMap="BPMap">
+		select b.*,p.* from smbms_buy b,smbms_provider p where b.providerId=p.id and b.disable=1 and b.id=#{id}
+	</select>
+	<insert id="buyAdd">
+		insert into smbms_buy(id,buyCode,buyName,productDesc,productUnit,productStandard,productUnitPrice,productCount,totalPrice,createBy,creationDate,isPayment,providerId,disable)
+			values(null,#{buyCode},#{buyName},#{productDesc},#{productUnit},#{productStandard},#{productUnitPrice},#{productCount},#{totalPrice},#{createBy},#{creationDate},#{isPayment},#{providerId},1)
+	</insert>
+	<update id="buyModify">
+		update smbms_buy set buyCode=#{buyCode},buyName=#{buyName},productDesc=#{productDesc},productUnit=#{productUnit},productStandard=#{productStandard},productUnitPrice=#{productUnitPrice},productCount=#{productCount},totalPrice=#{totalPrice},createBy=#{createBy},creationDate=#{creationDate},providerId=#{providerId},isPayment=#{isPayment}
+		where id=#{id}
+	</update>
+	<delete id="buyDel" parameterType="int">
+		<!--delete from smbms_buy where id=#{id}-->
+        update smbms_buy set disable=0 where id=#{id}
+	</delete>
+	 <select id="findByNameIdAndIsPayment" resultMap="BPMap">
+		select b.*,p.* from smbms_buy b,smbms_provider p where b.providerId=p.id and b.disable=1
+			<if test="buyName != null and buyName != ''">
+				and b.buyName like CONCAT("%",#{buyName},"%")
+			</if>
+			<if test="providerId != null and providerId != ''">
+				and b.providerId = #{providerId}
+			</if>
+			<if test="isPayment != null and isPayment != ''">
+				and b.isPayment = #{isPayment}
+			</if>
+         order by b.id desc
+	</select> 
+</mapper>

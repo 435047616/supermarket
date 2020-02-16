@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<levels>
+		<level name="jsp-api" value="project"/>
+		<level name="Spring-5.2.3.RELEASE" value="project"/>
+		<level name="Spring MVC-5.2.3.RELEASE" value="project"/>
+	</levels>
+</component>

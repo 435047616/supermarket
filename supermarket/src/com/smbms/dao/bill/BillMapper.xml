@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.dao.bill.BillMapper">
+	<resultMap type="Bill" id="billMap">
+	 	<id column="id" property="id"/>
+		<result column="billCode" property="billCode"/>
+        <result column="productCode" property="productCode"/>
+        <result column="productInsurance" property="productInsurance"/>
+		<result column="productDesc" property="productDesc"/>
+		<result column="productUnit" property="productUnit"/>
+		<result column="productCount" property="productCount"/>
+		<result column="totalPrice" property="totalPrice"/>
+
+        <result column="customerName" property="customerName"/>
+        <result column="customerAddress" property="customerAddress"/>
+        <result column="customerTel" property="customerTel"/>
+        <result column="dockPeople" property="dockPeople"/>
+        <result column="saleDock" property="saleDock"/>
+        <result column="payWay" property="payWay"/>
+        <result column="transactionNum" property="transactionNum"/>
+        <result column="payNum" property="payNum"/>
+        <result column="isFreeShip" property="isFreeShip"/>
+        <result column="myFreight" property="myFreight"/>
+        <result column="seliverStatus" property="seliverStatus"/>
+        <result column="isPayment" property="isPayment"/>
+        <result column="waybill" property="waybill"/>
+        <result column="seliverDate" property="seliverDate"/>
+
+        <result column="remark" property="remark"/>
+
+		<result column="createdBy" property="createdBy"/>
+		<result column="creationDate" property="creationDate"/>
+        <result column="disable" property="disable"/>
+        <result column="disable" property="disable"/>
+	</resultMap>
+	<resultMap type="Bill" id="BPMap" extends="billMap">
+		<association property="provider" javaType="Provider">
+		 	<id column="id" property="id"/>
+			<result column="proName" property="proName"/>
+		</association>
+	</resultMap>
+	<select id="findAllBill" resultMap="BPMap">
+		select b.* from smbms_bill b and b.disable=1
+	</select>
+	<select id="findBillById" resultMap="BPMap">
+		select b.* from smbms_bill b where b.disable=1 and b.id=#{id}
+	</select>
+	<insert id="billAdd">
+		insert into smbms_bill(id,billCode,productCode,productInsurance,productDesc,productUnit,productCount,totalPrice,customerName,customerAddress,customerTel,dockPeople,saleDock,payWay,transactionNum,payNum,isFreeShip,myFreight,seliverStatus,isPayment,waybill,seliverDate,remark,createdBy,creationDate,disable)
+			values(null,#{billCode},#{productCode},#{productInsurance},#{productDesc},#{productUnit},#{productCount},#{totalPrice},#{customerName},#{customerAddress},#{customerTel},#{dockPeople},#{saleDock},#{payWay},#{transactionNum},#{payNum},#{isFreeShip},#{myFreight},#{seliverStatus},#{isPayment},#{waybill},#{seliverDate},#{remark},#{createdBy},#{creationDate},1)
+	</insert>
+	<update id="billModify">
+		update smbms_bill set productCode=#{productCode},productInsurance=#{productInsurance},productDesc=#{productDesc},productUnit=#{productUnit},productCount=#{productCount},totalPrice=#{totalPrice},customerName=#{customerName},customerAddress=#{customerAddress},customerTel=#{customerTel},dockPeople=#{dockPeople},saleDock=#{saleDock},payWay=#{payWay},transactionNum=#{transactionNum},payNum=#{payNum},isFreeShip=#{isFreeShip},myFreight=#{myFreight},isPayment=#{isPayment},waybill=#{waybill},seliverDate=#{seliverDate},seliverStatus=#{seliverStatus},remark=#{remark}
+		where id=#{id}
+	</update>
+	<delete id="billDel" parameterType="int">
+		<!--delete from smbms_bill where id=#{id}-->
+		update smbms_bill set disable=0 where id=#{id}
+	</delete>
+    <select id="findAllCount" resultType="int">
+        select count(1) from smbms_bill b where b.disable=1
+            <if test="productCode != null and productCode != ''">
+                and b.productCode =#{productCode}
+            </if>
+            <if test="isPayment != null and isPayment != ''">
+                and b.isPayment = #{isPayment}
+            </if>
+            <if test="userId != null and userId != ''">
+                and b.createdBy = #{userId}
+            </if>
+    </select>
+	 <select id="findByNameIdAndIsPayment" resultMap="BPMap">
+		select b.* from smbms_bill b where b.disable=1
+			<if test="productCode != null and productCode != ''">
+				and b.productCode=#{productCode}
+			</if>
+			<if test="isPayment != null and isPayment != ''">
+				and b.isPayment = #{isPayment}
+			</if>
+             <if test="userId != null and userId != ''">
+                 and b.createdBy = #{userId}
+             </if>
+         order by b.id desc
+         limit #{currentPage},#{size}
+	</select> 
+</mapper>

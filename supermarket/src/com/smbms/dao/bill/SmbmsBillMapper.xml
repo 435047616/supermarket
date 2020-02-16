@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smbms.dao.bill.SmbmsBillMapper" >
+  <resultMap id="BaseResultMap" type="com.smbms.pojo.Bill" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="billCode" property="billCode" jdbcType="VARCHAR" />
+    <result column="productCode" property="productCode" jdbcType="VARCHAR" />
+    <result column="productInsurance" property="productInsurance" jdbcType="INTEGER" />
+    <result column="productDesc" property="productDesc" jdbcType="VARCHAR" />
+    <result column="productUnit" property="productUnit" jdbcType="VARCHAR" />
+    <result column="productCount" property="productCount" jdbcType="INTEGER" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DOUBLE" />
+    <result column="customerName" property="customerName" jdbcType="VARCHAR" />
+    <result column="customerAddress" property="customerAddress" jdbcType="VARCHAR" />
+    <result column="customerTel" property="customerTel" jdbcType="VARCHAR" />
+    <result column="dockPeople" property="dockPeople" jdbcType="VARCHAR" />
+    <result column="saleDock" property="saleDock" jdbcType="VARCHAR" />
+    <result column="payWay" property="payWay" jdbcType="INTEGER" />
+    <result column="transactionNum" property="transactionNum" jdbcType="BIGINT" />
+    <result column="payNum" property="payNum" jdbcType="BIGINT" />
+    <result column="isFreeShip" property="isFreeShip" jdbcType="INTEGER" />
+    <result column="myFreight" property="myFreight" jdbcType="VARCHAR" />
+    <result column="seliverStatus" property="seliverStatus" jdbcType="INTEGER" />
+    <result column="isPayment" property="isPayment" jdbcType="INTEGER" />
+    <result column="waybill" property="waybill" jdbcType="VARCHAR" />
+    <result column="seliverDate" property="seliverDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="createdBy" property="createdBy" jdbcType="BIGINT" />
+    <result column="creationDate" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="modifyBy" property="modifyBy" jdbcType="BIGINT" />
+    <result column="lejianBillId" property="lejianBillId" jdbcType="VARCHAR" />
+    <result column="modifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap type="Bill" id="BPMap" extends="BaseResultMap">
+    <association property="provider" javaType="Provider">
+      <id column="id" property="id"/>
+      <result column="proName" property="proName"/>
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, billCode, productCode, productInsurance, productDesc, productUnit,
+    productCount, totalPrice, customerName, customerAddress, customerTel, dockPeople,
+    saleDock, payWay, transactionNum, payNum, isFreeShip, myFreight, seliverStatus, isPayment,
+    waybill, seliverDate, remark, createdBy, creationDate, modifyBy, modifyDate,lejianBillId
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smbms.pojo.BillExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from smbms_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from smbms_bill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from smbms_bill
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smbms.pojo.BillExample" >
+    delete from smbms_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smbms.pojo.Bill" >
+    insert into smbms_bill (id, billCode,
+      productCode, productInsurance, productDesc,
+      productUnit, productCount, totalPrice,
+      customerName, customerAddress, customerTel,
+      dockPeople, saleDock, payWay,
+      transactionNum, payNum, isFreeShip,
+      myFreight, seliverStatus, isPayment,
+      waybill, seliverDate, remark,
+      createdBy, creationDate, modifyBy,
+      modifyDate,lejianBillId)
+    values (#{id,jdbcType=BIGINT}, #{billCode,jdbcType=VARCHAR},
+      #{productCode,jdbcType=VARCHAR}, #{productInsurance,jdbcType=INTEGER}, #{productDesc,jdbcType=VARCHAR},
+      #{productUnit,jdbcType=VARCHAR}, #{productCount,jdbcType=INTEGER}, #{totalPrice,jdbcType=DOUBLE},
+      #{customerName,jdbcType=VARCHAR}, #{customerAddress,jdbcType=VARCHAR}, #{customerTel,jdbcType=VARCHAR},
+      #{dockPeople,jdbcType=VARCHAR}, #{saleDock,jdbcType=VARCHAR}, #{payWay,jdbcType=INTEGER},
+      #{transactionNum,jdbcType=BIGINT}, #{payNum,jdbcType=BIGINT}, #{isFreeShip,jdbcType=INTEGER},
+      #{myFreight,jdbcType=VARCHAR}, #{seliverStatus,jdbcType=INTEGER}, #{isPayment,jdbcType=INTEGER},
+      #{waybill,jdbcType=VARCHAR}, #{seliverDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=BIGINT}, #{creationDate,jdbcType=TIMESTAMP}, #{modifyBy,jdbcType=BIGINT},
+      #{modifyDate,jdbcType=TIMESTAMP},#{lejianBillId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smbms.pojo.Bill" >
+    insert into smbms_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billCode != null" >
+        billCode,
+      </if>
+      <if test="productCode != null" >
+        productCode,
+      </if>
+      <if test="productInsurance != null" >
+        productInsurance,
+      </if>
+      <if test="productDesc != null" >
+        productDesc,
+      </if>
+      <if test="productUnit != null" >
+        productUnit,
+      </if>
+      <if test="productCount != null" >
+        productCount,
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice,
+      </if>
+      <if test="customerName != null" >
+        customerName,
+      </if>
+      <if test="customerAddress != null" >
+        customerAddress,
+      </if>
+      <if test="customerTel != null" >
+        customerTel,
+      </if>
+      <if test="dockPeople != null" >
+        dockPeople,
+      </if>
+      <if test="saleDock != null" >
+        saleDock,
+      </if>
+      <if test="payWay != null" >
+        payWay,
+      </if>
+      <if test="transactionNum != null" >
+        transactionNum,
+      </if>
+      <if test="payNum != null" >
+        payNum,
+      </if>
+      <if test="isFreeShip != null" >
+        isFreeShip,
+      </if>
+      <if test="myFreight != null" >
+        myFreight,
+      </if>
+      <if test="seliverStatus != null" >
+        seliverStatus,
+      </if>
+      <if test="isPayment != null" >
+        isPayment,
+      </if>
+      <if test="waybill != null" >
+        waybill,
+      </if>
+      <if test="seliverDate != null" >
+        seliverDate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createdBy != null" >
+        createdBy,
+      </if>
+      <if test="creationDate != null" >
+        creationDate,
+      </if>
+      <if test="modifyBy != null" >
+        modifyBy,
+      </if>
+      <if test="modifyDate != null" >
+        modifyDate,
+      </if>
+      <if test="lejianBillId != null">
+        lejianBillId
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="billCode != null" >
+        #{billCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productInsurance != null" >
+        #{productInsurance,jdbcType=INTEGER},
+      </if>
+      <if test="productDesc != null" >
+        #{productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="productUnit != null" >
+        #{productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null" >
+        #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerAddress != null" >
+        #{customerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="customerTel != null" >
+        #{customerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="dockPeople != null" >
+        #{dockPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="saleDock != null" >
+        #{saleDock,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null" >
+        #{payWay,jdbcType=INTEGER},
+      </if>
+      <if test="transactionNum != null" >
+        #{transactionNum,jdbcType=BIGINT},
+      </if>
+      <if test="payNum != null" >
+        #{payNum,jdbcType=BIGINT},
+      </if>
+      <if test="isFreeShip != null" >
+        #{isFreeShip,jdbcType=INTEGER},
+      </if>
+      <if test="myFreight != null" >
+        #{myFreight,jdbcType=VARCHAR},
+      </if>
+      <if test="seliverStatus != null" >
+        #{seliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isPayment != null" >
+        #{isPayment,jdbcType=INTEGER},
+      </if>
+      <if test="waybill != null" >
+        #{waybill,jdbcType=VARCHAR},
+      </if>
+      <if test="seliverDate != null" >
+        #{seliverDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyBy != null" >
+        #{modifyBy,jdbcType=BIGINT},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lejianBillId != null" >
+        #{lejianBillId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smbms.pojo.BillExample" resultType="java.lang.Integer" >
+    select count(*) from smbms_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update smbms_bill
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.billCode != null" >
+        billCode = #{record.billCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCode != null" >
+        productCode = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productInsurance != null" >
+        productInsurance = #{record.productInsurance,jdbcType=INTEGER},
+      </if>
+      <if test="record.productDesc != null" >
+        productDesc = #{record.productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productUnit != null" >
+        productUnit = #{record.productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCount != null" >
+        productCount = #{record.productCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalPrice != null" >
+        totalPrice = #{record.totalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.customerName != null" >
+        customerName = #{record.customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerAddress != null" >
+        customerAddress = #{record.customerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerTel != null" >
+        customerTel = #{record.customerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dockPeople != null" >
+        dockPeople = #{record.dockPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleDock != null" >
+        saleDock = #{record.saleDock,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payWay != null" >
+        payWay = #{record.payWay,jdbcType=INTEGER},
+      </if>
+      <if test="record.transactionNum != null" >
+        transactionNum = #{record.transactionNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.payNum != null" >
+        payNum = #{record.payNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.isFreeShip != null" >
+        isFreeShip = #{record.isFreeShip,jdbcType=INTEGER},
+      </if>
+      <if test="record.myFreight != null" >
+        myFreight = #{record.myFreight,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seliverStatus != null" >
+        seliverStatus = #{record.seliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.isPayment != null" >
+        isPayment = #{record.isPayment,jdbcType=INTEGER},
+      </if>
+      <if test="record.waybill != null" >
+        waybill = #{record.waybill,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seliverDate != null" >
+        seliverDate = #{record.seliverDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        createdBy = #{record.createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.creationDate != null" >
+        creationDate = #{record.creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyBy != null" >
+        modifyBy = #{record.modifyBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifyDate != null" >
+        modifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lejianBillId!= null">
+        lejianBillId= #{record.lejianBillId,jdbcType=VARCHAR}
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update smbms_bill
+    set id = #{record.id,jdbcType=BIGINT},
+    billCode = #{record.billCode,jdbcType=VARCHAR},
+    productCode = #{record.productCode,jdbcType=VARCHAR},
+    productInsurance = #{record.productInsurance,jdbcType=INTEGER},
+    productDesc = #{record.productDesc,jdbcType=VARCHAR},
+    productUnit = #{record.productUnit,jdbcType=VARCHAR},
+    productCount = #{record.productCount,jdbcType=INTEGER},
+    totalPrice = #{record.totalPrice,jdbcType=DOUBLE},
+    customerName = #{record.customerName,jdbcType=VARCHAR},
+    customerAddress = #{record.customerAddress,jdbcType=VARCHAR},
+    customerTel = #{record.customerTel,jdbcType=VARCHAR},
+    dockPeople = #{record.dockPeople,jdbcType=VARCHAR},
+    saleDock = #{record.saleDock,jdbcType=VARCHAR},
+    payWay = #{record.payWay,jdbcType=INTEGER},
+    transactionNum = #{record.transactionNum,jdbcType=BIGINT},
+    payNum = #{record.payNum,jdbcType=BIGINT},
+    isFreeShip = #{record.isFreeShip,jdbcType=INTEGER},
+    myFreight = #{record.myFreight,jdbcType=VARCHAR},
+    seliverStatus = #{record.seliverStatus,jdbcType=INTEGER},
+    isPayment = #{record.isPayment,jdbcType=INTEGER},
+    waybill = #{record.waybill,jdbcType=VARCHAR},
+    seliverDate = #{record.seliverDate,jdbcType=TIMESTAMP},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    createdBy = #{record.createdBy,jdbcType=BIGINT},
+    creationDate = #{record.creationDate,jdbcType=TIMESTAMP},
+    modifyBy = #{record.modifyBy,jdbcType=BIGINT},
+    modifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
+    lejianBillId = #{record.lejianBillId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smbms.pojo.Bill" >
+    update smbms_bill
+    <set >
+      <if test="billCode != null" >
+        billCode = #{billCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        productCode = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productInsurance != null" >
+        productInsurance = #{productInsurance,jdbcType=INTEGER},
+      </if>
+      <if test="productDesc != null" >
+        productDesc = #{productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="productUnit != null" >
+        productUnit = #{productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null" >
+        productCount = #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice = #{totalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="customerName != null" >
+        customerName = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerAddress != null" >
+        customerAddress = #{customerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="customerTel != null" >
+        customerTel = #{customerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="dockPeople != null" >
+        dockPeople = #{dockPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="saleDock != null" >
+        saleDock = #{saleDock,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null" >
+        payWay = #{payWay,jdbcType=INTEGER},
+      </if>
+      <if test="transactionNum != null" >
+        transactionNum = #{transactionNum,jdbcType=BIGINT},
+      </if>
+      <if test="payNum != null" >
+        payNum = #{payNum,jdbcType=BIGINT},
+      </if>
+      <if test="isFreeShip != null" >
+        isFreeShip = #{isFreeShip,jdbcType=INTEGER},
+      </if>
+      <if test="myFreight != null" >
+        myFreight = #{myFreight,jdbcType=VARCHAR},
+      </if>
+      <if test="seliverStatus != null" >
+        seliverStatus = #{seliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isPayment != null" >
+        isPayment = #{isPayment,jdbcType=INTEGER},
+      </if>
+      <if test="waybill != null" >
+        waybill = #{waybill,jdbcType=VARCHAR},
+      </if>
+      <if test="seliverDate != null" >
+        seliverDate = #{seliverDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        createdBy = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null" >
+        creationDate = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyBy != null" >
+        modifyBy = #{modifyBy,jdbcType=BIGINT},
+      </if>
+      <if test="modifyDate != null" >
+        modifyDate = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lejianBillId != null">
+        lejianBillId=#{lejianBillId,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smbms.pojo.Bill" >
+    update smbms_bill
+    set billCode = #{billCode,jdbcType=VARCHAR},
+      productCode = #{productCode,jdbcType=VARCHAR},
+      productInsurance = #{productInsurance,jdbcType=INTEGER},
+      productDesc = #{productDesc,jdbcType=VARCHAR},
+      productUnit = #{productUnit,jdbcType=VARCHAR},
+      productCount = #{productCount,jdbcType=INTEGER},
+      totalPrice = #{totalPrice,jdbcType=DOUBLE},
+      customerName = #{customerName,jdbcType=VARCHAR},
+      customerAddress = #{customerAddress,jdbcType=VARCHAR},
+      customerTel = #{customerTel,jdbcType=VARCHAR},
+      dockPeople = #{dockPeople,jdbcType=VARCHAR},
+      saleDock = #{saleDock,jdbcType=VARCHAR},
+      payWay = #{payWay,jdbcType=INTEGER},
+      transactionNum = #{transactionNum,jdbcType=BIGINT},
+      payNum = #{payNum,jdbcType=BIGINT},
+      isFreeShip = #{isFreeShip,jdbcType=INTEGER},
+      myFreight = #{myFreight,jdbcType=VARCHAR},
+      seliverStatus = #{seliverStatus,jdbcType=INTEGER},
+      isPayment = #{isPayment,jdbcType=INTEGER},
+      waybill = #{waybill,jdbcType=VARCHAR},
+      seliverDate = #{seliverDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      createdBy = #{createdBy,jdbcType=BIGINT},
+      creationDate = #{creationDate,jdbcType=TIMESTAMP},
+      modifyBy = #{modifyBy,jdbcType=BIGINT},
+      modifyDate = #{modifyDate,jdbcType=TIMESTAMP},
+      lejianBillId=#{lejianBillId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="findAllBill" resultMap="BPMap">
+		select b.* from smbms_bill b
+	</select>
+  <select id="findBillById" resultMap="BPMap">
+		select b.*  from smbms_bill b where b.id=#{id}
+	</select>
+  <insert id="billAdd">
+		insert into smbms_bill(id,billCodeproductUnit,productCount,creationDate,totalPrice,isPayment)
+			values(null,#{billCode},#{productUnit},#{productCount},#{creationDate},#{totalPrice},#{isPayment})
+	</insert>
+  <update id="billModify">
+		update smbms_bill set productUnit=#{productUnit},productCount=#{productCount},totalPrice=#{totalPrice},isPayment=#{isPayment}
+		where id=#{id}
+	</update>
+  <delete id="billDel" parameterType="int">
+		delete from smbms_bill where id=#{id}
+	</delete>
+  <select id="findByNameIdAndIsPayment" resultMap="BPMap">
+    select b.* from smbms_bill b
+    <if test="isPayment != null and isPayment != ''">
+      and b.isPayment = #{isPayment}
+    </if>
+  </select>
+  <!--购买财务汇总-->
+  <select id="financeBuyReportByOrders"  parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+      SELECT   a.`buyName`,
+      SUM(a.`productCount`) AS 'buyCount' ,
+      SUM(a.`totalPrice`) AS 'buyTotal'
+      FROM smbms_buy a
+    <where>
+      <if test="startTime !=null and startTime!=''">
+        and <![CDATA[
+              a.`creationDate`>= str_to_date( #{startTime},'%Y-%m-%d %H:%i:%s')
+              ]]>
+      </if>
+
+      <if test="endTime !=null and endTime!=''">
+        and <![CDATA[
+                a.`creationDate`<= str_to_date( #{endTime},'%Y-%m-%d %H:%i:%s')
+                ]]>
+      </if>
+    </where>
+         GROUP BY a.`buyName`
+          <if test="buyName !=null and buyName!=''">
+            HAVING a.`buyName`=#{buyName}
+          </if>
+  </select>
+
+  <!--销售财务汇总-->
+  <select id="financeSaleReportByOrders"  parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+        SELECT  a.`productInsurance`,
+        SUM(a.`productCount`) AS 'saleCount',
+        SUM(a.`totalPrice`) AS 'saleTotal' FROM smbms_bill a
+
+    <where>
+      <if test="startTime !=null and startTime!=''">
+        and <![CDATA[
+              a.`creationDate`>= str_to_date( #{startTime},'%Y-%m-%d %H:%i:%s')
+              ]]>
+      </if>
+
+      <if test="endTime !=null and endTime!=''">
+        and <![CDATA[
+                a.`creationDate`<= str_to_date( #{endTime},'%Y-%m-%d %H:%i:%s')
+                ]]>
+      </if>
+      <if test="productInsurance !=null and productInsurance!=''">
+        and a.`productInsurance`=#{productInsurance}
+      </if>
+    </where>
+     GROUP BY a.`productInsurance`
+  </select>
+
+<!--订单统计-->
+  <select id="orderReportByOrders" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  SELECT
+  s.`id`,
+  s.`productUnit`,
+  s.`customerName`,
+  s.`customerTel`,
+  s.`customerAddress`,
+  s.`productCount`,
+  s.`isFreeShip`,
+  s.`myFreight`,
+  s.`totalPrice`,
+  s.`isPayment` ,
+  s.`seliverStatus` ,
+  s.`waybill` ,
+  s.`seliverDate` ,
+  s.`dockPeople` ,
+    s.`billCode` ,
+  s.`remark`
+  FROM
+  smbms_bill s
+  <where>
+
+    <if test="id !=null and id!=''">
+      and s.`billCode`=#{id}
+    </if>
+    <if test="creationDate !=null and creationDate!=''">
+      and <![CDATA[
+              s.`creationDate`= str_to_date( #{creationDate},'%Y-%m-%d %H:%i:%s')
+              ]]>
+    </if>
+    <if test="seliverDate !=null and seliverDate!=''">
+      and <![CDATA[
+              s.`seliverDate`= str_to_date( #{seliverDate},'%Y-%m-%d %H:%i:%s')
+              ]]>
+    </if>
+    <if test="isFreeShip !=null and isFreeShip!=''">
+      and   s.`isFreeShip`=#{isFreeShip}
+    </if>
+    <if test="seliverStatus !=null and seliverStatus!=''">
+      and   s.`seliverStatus`=#{seliverStatus}
+    </if>
+    <if test="isPayment !=null and isPayment!=''">
+      and s.`isPayment`=#{isPayment}
+    </if>
+    </where>
+  </select>
+  <select id="saleReportByOrders" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    SELECT
+    SUM(a.`productCount`) AS 'saleCount' ,
+    SUM(a.`totalPrice`) AS 'saleTotal',
+    c.`userName` AS 'salePeople',
+    a.`productInsurance`
+    FROM smbms_bill a , smbms_user c where a.`createdBy`=c.`id`
+    <if test="startTime !=null and startTime!=''">
+      and <![CDATA[
+              a.`creationDate`>= str_to_date( #{startTime},'%Y-%m-%d %H:%i:%s')
+              ]]>
+    </if>
+    <if test="endTime !=null and endTime!=''">
+      and <![CDATA[
+              a.`creationDate`<= str_to_date( #{endTime},'%Y-%m-%d %H:%i:%s')
+              ]]>
+    </if>
+    <if test="productInsurance !=null and productInsurance!=''">
+      and a.`productInsurance`=#{productInsurance}
+    </if>
+    <if test="salePeople!=null and salePeople!=''">
+      and  c.`userName` like CONCAT(CONCAT('%',#{salePeople}),'%')
+    </if>
+    GROUP BY a.`createdBy` ORDER BY saleTotal DESC
+  </select>
+</mapper>

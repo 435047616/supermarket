@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Spring-5.2.3.RELEASE">
+    <archive path="D:/idea-workspace/supermarket/lib/spring-aspects-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-context-support-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-instrument-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-expression-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-aop-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-jdbc-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-jms-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-oxm-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-orm-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-beans-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/commons-logging-1.2.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/aopalliance-1.0.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-messaging-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-tx-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-context-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-test-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-core-5.2.3.RELEASE.jar" />
+  </library>
+  <library name="Spring MVC-5.2.3.RELEASE">
+    <archive path="D:/idea-workspace/supermarket/lib/spring-webmvc-5.2.3.RELEASE.jar" />
+    <archive path="D:/idea-workspace/supermarket/lib/spring-web-5.2.3.RELEASE.jar" />
+  </library>
+  <library name="jsp-api">
+    <archive path="D:/apache-tomcat-7.0.94/lib/jsp-api.jar" />
+    <archive path="D:/apache-tomcat-7.0.94/lib/servlet-api.jar" />
+  </library>
+  <library name="scala-sdk-2.11.8">
+    <archive path="D:/scala-2.11.8/lib/scala-actors-2.11.0.jar" />
+    <archive path="D:/scala-2.11.8/lib/scala-actors-migration_2.11-1.1.0.jar" />
+    <archive path="D:/scala-2.11.8/lib/scala-library.jar" />
+    <archive path="D:/scala-2.11.8/lib/scala-parser-combinators_2.11-1.0.4.jar" />
+    <archive path="D:/scala-2.11.8/lib/scala-reflect.jar" />
+    <archive path="D:/scala-2.11.8/lib/scala-swing_2.11-1.0.2.jar" />
+    <archive path="D:/scala-2.11.8/lib/scala-xml_2.11-1.0.4.jar" />
+  </library>
+</eclipse-userlibraries>
+
