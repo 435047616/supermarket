@@ -23,7 +23,7 @@ function priceReg (value){
 
 $(function(){
     buyCode = $("#buyCode");
-    buyName = $("#buyName");
+	productId = $("#productId");
 	productUnit = $("#productUnit");
 	productCount = $("#productCount");
 	providerId = $("#providerId");
@@ -33,7 +33,7 @@ $(function(){
 	backBtn = $("#back");
 	//初始化的时候，要把所有的提示信息变为：* 以提示必填项，更灵活，不要写在页面上
     buyCode.next().html("*");
-    buyName.next().html("*");
+	productId.next().html("*");
 	productUnit.next().html("*");
 	productCount.next().html("*");
 	providerId.next().html("*");
@@ -63,25 +63,46 @@ $(function(){
 	});*/
     $.ajax({//获得供应商列表
         type:"GET",
-        url:path+"/sys/billSelect",//请求的url
+        url:path+"/product/all",//请求的url
         //请求参数
         dataType:"json",//ajax接口（请求url）返回的数据类型
         success:function(data){//data：返回数据（json对象）
             if(data != null){
-                $("#providerId").html("");
-                var options = "<option value=\"0\">请选择</option>";
+                $("#productId").html("");
+                var options = "";
                 for(var i = 0; i < data.length; i++){
                     //alert(data[i].id);
                     //alert(data[i].proName);
-                    options += "<option value=\""+data[i].id+"\">"+data[i].proName+"</option>";
+                    options += "<option value=\""+data[i].productId+"\">"+data[i].productName+"</option>";
                 }
-                $("#providerId").html(options);
+                $("#productId").html(options);
             }
         },
         error:function(data){//当访问时候，404，500 等非200的错误状态码
             validateTip(providerId.next(),{"color":"red"},imgNo+" 获取供应商列表error",false);
         }
     });
+	$.ajax({//获得供应商列表
+		type:"GET",
+		url:path+"/sys/buyselect",//请求的url
+		//请求参数
+		dataType:"json",//ajax接口（请求url）返回的数据类型
+		success:function(data){//data：返回数据（json对象）
+			if(data != null){
+				$("#providerId").html("");
+				var options = "<option value=\"0\">请选择</option>";
+				for(var i = 0; i < data.length; i++){
+					//alert(data[i].id);
+					//alert(data[i].proName);
+					options += "<option value=\""+data[i].id+"\">"+data[i].proName+"</option>";
+				}
+				$("#providerId").html(options);
+			}
+		},
+		error:function(data){//当访问时候，404，500 等非200的错误状态码
+			validateTip(providerId.next(),{"color":"red"},imgNo+" 获取供应商列表error",false);
+		}
+	});
 	/*
 	 * 验证
 	 * 失焦\获焦
@@ -98,7 +119,7 @@ $(function(){
 		validateTip(buyCode.next(),{"color":"#666666"},"* 请输入订单编码",false);
 	}).focus();
 
-    buyName.on("focus",function(){
+	productId.on("focus",function(){
 		validateTip(buyName.next(),{"color":"#666666"},"* 请输入商品名称",false);
 	}).on("blur",function(){
 		if(buyName.val() != null && buyName.val() != ""){
@@ -153,9 +174,7 @@ $(function(){
 	addBtn.on("click",function(){
 		if(buyCode.attr("validateStatus") != "true"){
             buyCode.blur();
-		}else if(buyName.attr("validateStatus") != "true"){
-            buyName.blur();
-		}else if(productUnit.attr("validateStatus") != "true"){
+		} else if(productUnit.attr("validateStatus") != "true"){
 			productUnit.blur();
 		}else if(productCount.attr("validateStatus") != "true"){
             productCount.blur();

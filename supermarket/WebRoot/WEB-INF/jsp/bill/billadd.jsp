@@ -20,8 +20,8 @@
              <div>
                  <label for="productCode">商品名称：</label>
                  <select name="productCode" id="productCode">
-                 </select>
-				 <font color="red"></font>
+             </select>
+                 <font color="red"></font>
              </div>
              <div>
                  <label for="productInsurance">商品单价：</label>

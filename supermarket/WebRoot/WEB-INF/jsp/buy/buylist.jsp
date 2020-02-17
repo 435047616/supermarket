@@ -63,7 +63,7 @@
                     <span>${buy.buyName }</span>
                 </td>
                 <td>
-                    <span>${buy.provider.proName}</span>
+                    <span>${buy.proName}</span>
                 </td>
                 <td>
                     <span>${buy.productStandard}</span>

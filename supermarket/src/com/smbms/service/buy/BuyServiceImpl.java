@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,7 +24,7 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public Buy findBuyById(int id) {
+    public HashMap<String,Object> findBuyById(int id) {
         return bm.findBuysById(id);
     }
 
@@ -56,7 +57,7 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public List<Buy> findByNameIdAndIsPayment(String productName, Integer providerId, Integer isPayment) {
+    public List<HashMap<String,Object>> findByNameIdAndIsPayment(String productName, Integer providerId, Integer isPayment) {
         return bm.findByNameIdAndIsPayment(productName, providerId, isPayment);
     }
 }

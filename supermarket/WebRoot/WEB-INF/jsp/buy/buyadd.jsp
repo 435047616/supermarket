@@ -19,8 +19,9 @@
                  <font color="red"></font>
              </div>
              <div>
-                 <label for="buyName">商品名称：</label>
-                 <input type="text" name="buyName" id="buyName" value="">
+                 <label for="productId">商品名称：</label>
+                 <select name="productId" id="productId">
+                 </select>
                  <font color="red"></font>
              </div>
              <div>

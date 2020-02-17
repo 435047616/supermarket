@@ -724,4 +724,54 @@
     </if>
     GROUP BY a.`createdBy` ORDER BY saleTotal DESC
   </select>
+  <select id="findAllBillsByOrders" parameterType="java.util.Map"  resultType="java.util.Map">
+    SELECT s.*,b.productName AS 'productName' FROM smbms_bill s left join smbms_product b on s.productCode=b.productCode where s.disable=1
+     <if test="billCode !=null and billCode!=''">
+        and s.`billCode`=#{billCode}
+      </if>
+    <if test="buyName!=null and buyName!=''">
+      and  s.`buyName` like CONCAT(CONCAT('%',#{buyName}),'%')
+    </if>
+    <if test="customerName!=null and customerName!=''">
+      and  s.`customerName` like CONCAT(CONCAT('%',#{customerName}),'%')
+    </if>
+    <if test="productInsurance !=null and productInsurance!=''">
+      and s.`productInsurance`=#{productInsurance}
+    </if>
+
+    <if test="creationDate !=null and creationDate!=''">
+      and <![CDATA[
+                s.`creationDate`= str_to_date( #{creationDate},'%Y-%m-%d %H:%i:%s')
+                ]]>
+    </if>
+    <if test="seliverDate !=null and seliverDate!=''">
+      and <![CDATA[
+                s.`seliverDate`= str_to_date( #{seliverDate},'%Y-%m-%d %H:%i:%s')
+                ]]>
+    </if>
+    <if test="dockPeople!=null and dockPeople!=''">
+      and  s.`dockPeople` like CONCAT(CONCAT('%',#{dockPeople}),'%')
+    </if>
+    <if test="saleDock!=null and saleDock!=''">
+      and  s.`saleDock` like CONCAT(CONCAT('%',#{saleDock}),'%')
+    </if>
+    <if test="payWay !=null and payWay!=''">
+      and   s.`payWay`=#{payWay}
+    </if>
+
+    <if test="isFreeShip !=null and isFreeShip!=''">
+      and   s.`isFreeShip`=#{isFreeShip}
+    </if>
+
+    <if test="seliverStatus !=null and seliverStatus!=''">
+      and   s.`seliverStatus`=#{seliverStatus}
+    </if>
+    <if test="isPayment !=null and isPayment!=''">
+      and s.`isPayment`=#{isPayment}
+    </if>
+      <if test="userId != null and userId != ''">
+        and s.createdBy = #{userId}
+      </if>
+      order by  s.`creationDate` DESC
+  </select>
 </mapper>

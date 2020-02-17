@@ -1,10 +1,8 @@
 package com.smbms.controller.buy;
 
-import com.smbms.pojo.Bill;
 import com.smbms.pojo.Buy;
 import com.smbms.pojo.Provider;
 import com.smbms.pojo.User;
-import com.smbms.service.bill.BillService;
 import com.smbms.service.buy.BuyService;
 import com.smbms.service.provider.ProviderService;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,7 +56,7 @@ public class BuyController {
             }
             request.setAttribute("isPayment", isPayment);
         }
-        List<Buy> list=bs.findByNameIdAndIsPayment(buyName, providerId, isPayment);
+        List<HashMap<String,Object>> list=bs.findByNameIdAndIsPayment(buyName, providerId, isPayment);
         List<Provider> providerList=ps.findAllProvider();
         model.addAttribute("buyList", list);
         model.addAttribute("providerList", providerList);
@@ -71,7 +68,7 @@ public class BuyController {
     @RequestMapping("/sys/buyview")
     public String proviews(HttpSession session, @RequestParam String buyid){
         int id=Integer.parseInt(buyid);
-        Buy b=bs.findBuyById(id);
+        HashMap<String,Object> b=bs.findBuyById(id);
         session.setAttribute("buy", b);
         return "buy/buyview";
     }
@@ -90,8 +87,8 @@ public class BuyController {
     @RequestMapping("/sys/buymodify")
     public String buymodify(HttpSession session,@RequestParam String buyid){
         int id=Integer.parseInt(buyid);
-        Buy buy=bs.findBuyById(id);
-        System.out.println("------------------:"+buy.getProvider().getId());
+        HashMap<String,Object> buy=bs.findBuyById(id);
+        //System.out.println("------------------:"+buy.getProvider().getId());
         session.setAttribute("buy", buy);
         return "buy/buymodify";
     }
@@ -106,7 +103,6 @@ public class BuyController {
 
         int id=Integer.parseInt(request.getParameter("id"));
         String buyCode=request.getParameter("buyCode");
-        String buyName=request.getParameter("buyName");
         String productDesc = request.getParameter("productDesc");
         String productUnit = request.getParameter("productUnit");
         String productStandard = request.getParameter("productStandard");
@@ -119,7 +115,6 @@ public class BuyController {
 
         Buy buy=new Buy();
         buy.setBuyCode(buyCode);
-        buy.setBuyName(buyName);
         buy.setProductDesc(productDesc);
         buy.setProductUnit(productUnit);
         buy.setProductStandard(productStandard);
@@ -174,7 +169,6 @@ public class BuyController {
     public String dobuyadd(HttpServletRequest request){
         System.out.println("进入添加页面");
         String buyCode=request.getParameter("buyCode");
-        String buyName=request.getParameter("buyName");
         String productDesc=request.getParameter("productDesc");
         String productUnit=request.getParameter("productUnit");
         String productStandard=request.getParameter("productStandard");
@@ -185,10 +179,10 @@ public class BuyController {
         java.text.SimpleDateFormat sdf = new  java.text.SimpleDateFormat("yyyy-MM-dd");
         int isPayment=Integer.parseInt(request.getParameter("isPayment"));
         int providerId=Integer.valueOf(request.getParameter("providerId"));
+        int productId=Integer.valueOf(request.getParameter("productId"));
 
         Buy buy=new Buy();
         buy.setBuyCode(buyCode);
-        buy.setBuyName(buyName);
         buy.setProductDesc(productDesc);
         buy.setProductUnit(productUnit);
         buy.setProductStandard(productStandard);
@@ -196,6 +190,7 @@ public class BuyController {
         buy.setProductCount(productCount);
         buy.setTotalPrice(totalPrice);
         buy.setCreateBy(createBy);
+        buy.setProductId(productId);
         try {
             buy.setCreationDate(sdf.parse(request.getParameter("creationDate")));
         } catch (ParseException e) {

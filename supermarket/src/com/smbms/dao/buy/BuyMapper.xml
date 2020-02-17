@@ -4,7 +4,6 @@
 	<resultMap type="Buy" id="buyMap">
 	 	<id column="id" property="id"/>
 		<result column="buyCode" property="buyCode"/>
-		<result column="buyName" property="buyName"/>
 		<result column="productDesc" property="productDesc"/>
 		<result column="productUnit" property="productUnit"/>
         <result column="productStandard" property="productStandard"/>
@@ -26,12 +25,12 @@
 	<select id="findAllBuys" resultMap="BPMap">
 		select b.*,p.* from smbms_buy b,smbms_provider p where b.providerId=p.id and b.disable=1
 	</select>
-	<select id="findBuysById" resultMap="BPMap">
-		select b.*,p.* from smbms_buy b,smbms_provider p where b.providerId=p.id and b.disable=1 and b.id=#{id}
+	<select id="findBuysById" resultType="java.util.HashMap">
+		select b.*,p.proName ,r.productId,r.productName as 'buyName' from smbms_buy b,smbms_provider p,smbms_product r where b.providerId=p.id and b.disable=1 and b.id=#{id} and b.productId=r.productId
 	</select>
 	<insert id="buyAdd">
-		insert into smbms_buy(id,buyCode,buyName,productDesc,productUnit,productStandard,productUnitPrice,productCount,totalPrice,createBy,creationDate,isPayment,providerId,disable)
-			values(null,#{buyCode},#{buyName},#{productDesc},#{productUnit},#{productStandard},#{productUnitPrice},#{productCount},#{totalPrice},#{createBy},#{creationDate},#{isPayment},#{providerId},1)
+		insert into smbms_buy(id,buyCode,productDesc,productUnit,productStandard,productUnitPrice,productCount,totalPrice,createBy,creationDate,isPayment,providerId,disable,productId)
+			values(null,#{buyCode},#{productDesc},#{productUnit},#{productStandard},#{productUnitPrice},#{productCount},#{totalPrice},#{createBy},#{creationDate},#{isPayment},#{providerId},1,#{productId})
 	</insert>
 	<update id="buyModify">
 		update smbms_buy set buyCode=#{buyCode},buyName=#{buyName},productDesc=#{productDesc},productUnit=#{productUnit},productStandard=#{productStandard},productUnitPrice=#{productUnitPrice},productCount=#{productCount},totalPrice=#{totalPrice},createBy=#{createBy},creationDate=#{creationDate},providerId=#{providerId},isPayment=#{isPayment}
@@ -41,10 +40,10 @@
 		<!--delete from smbms_buy where id=#{id}-->
         update smbms_buy set disable=0 where id=#{id}
 	</delete>
-	 <select id="findByNameIdAndIsPayment" resultMap="BPMap">
-		select b.*,p.* from smbms_buy b,smbms_provider p where b.providerId=p.id and b.disable=1
+	 <select id="findByNameIdAndIsPayment" resultType="java.util.HashMap">
+		select b.*,p.proName  ,r.productName AS 'buyName'from smbms_buy b,smbms_provider p,smbms_product r where b.providerId=p.id and b.disable=1 and b.productId=r.productId
 			<if test="buyName != null and buyName != ''">
-				and b.buyName like CONCAT("%",#{buyName},"%")
+				and r.productName like CONCAT("%",#{buyName},"%")
 			</if>
 			<if test="providerId != null and providerId != ''">
 				and b.providerId = #{providerId}

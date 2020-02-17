@@ -5,7 +5,6 @@ import java.util.Date;
 public class Buy {
     private Integer id;
     private String buyCode;              //购进产品code
-    private String buyName;              //购进产品名称
     private String productDesc;          //购进产品描述
     private String productUnit;          //购进产品单位
     private String productStandard;      //购进产品规格 5支/盒
@@ -18,7 +17,15 @@ public class Buy {
     private int providerId;             //供应商ID
     private Provider provider;         //供应商
     private int disable;              //人工删除标识
+    private Integer productId;     //商品分类id
 
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
     public Integer getId() {
         return id;
@@ -36,13 +43,6 @@ public class Buy {
         this.buyCode = buyCode;
     }
 
-    public String getBuyName() {
-        return buyName;
-    }
-
-    public void setBuyName(String buyName) {
-        this.buyName = buyName;
-    }
 
     public String getProductDesc() {
         return productDesc;
@@ -145,7 +145,6 @@ public class Buy {
         return "Buy{" +
                 "id=" + id +
                 ", buyCode='" + buyCode + '\'' +
-                ", buyName='" + buyName + '\'' +
                 ", productDesc='" + productDesc + '\'' +
                 ", productUnit='" + productUnit + '\'' +
                 ", productStandard='" + productStandard + '\'' +

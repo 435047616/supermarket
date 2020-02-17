@@ -108,7 +108,7 @@ $(function(){
 	
 	$.ajax({//获得商品列表
 		type:"GET",
-		url:path+"/sys/buySelect",//请求的url
+		url:path+"/product/all",//请求的url
 		//请求参数
 		dataType:"json",//ajax接口（请求url）返回的数据类型
 		success:function(data){//data：返回数据（json对象）
@@ -116,7 +116,7 @@ $(function(){
 				$("#productCode").html("");
 				var options = "<option value=\"0\">请选择</option>";
 				for(var i = 0; i < data.length; i++){
-					options += "<option value=\""+data[i].buyCode+"\">"+data[i].buyName+"</option>";
+					options += "<option value=\""+data[i].productCode+"\">"+data[i].productName+"</option>";
 				}
 				$("#productCode").html(options);
 			}

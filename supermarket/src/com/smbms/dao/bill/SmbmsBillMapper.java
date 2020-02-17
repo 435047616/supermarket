@@ -67,4 +67,11 @@ public interface SmbmsBillMapper {
      * @return
      */
     List<HashMap<String, Object>> saleReportByOrders(Map<String, Object> orders);
+
+    /**
+     * 通过条件 查询所有订单并进行分页展示
+     * @param params
+     * @return
+     */
+    List<HashMap<String, Object>> findAllBillsByOrders(Map<String, Object> params);
 }

@@ -1,20 +1,25 @@
 package com.smbms.service.bill;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Date;
-import javax.annotation.Resource;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.smbms.dao.bill.BillMapper;
 import com.smbms.dao.bill.SmbmsBillMapper;
+import com.smbms.pojo.Bill;
 import com.smbms.pojo.MyResponseBody;
 import com.smbms.pojo.Page;
+import com.smbms.pojo.PageBean;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.smbms.dao.bill.BillMapper;
-import com.smbms.pojo.Bill;
+
+import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 @Service
 @Transactional
 public class BillServiceImpl implements BillService {
@@ -158,5 +163,17 @@ public class BillServiceImpl implements BillService {
             myResponseBody.setMessage("操作失败，服务器异常");
         }
         return myResponseBody;
+    }
+
+    @Override
+    public PageBean findAllBillsByOrders(Map<String, Object> params, Page page) {
+
+        PageHelper pageHelper = new PageHelper();
+        page.setSize(5);
+        pageHelper.startPage(page.getCurrentpage(), page.getSize());
+        List<HashMap<String, Object>> orderReports=smbmsBillMapper.findAllBillsByOrders(params);
+        PageInfo pageInfo = new PageInfo(orderReports);
+
+        return new PageBean(page.getSize(), pageInfo.getTotal(), orderReports);
     }
 }

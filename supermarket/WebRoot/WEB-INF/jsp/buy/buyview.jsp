@@ -18,7 +18,7 @@
 
          <p><strong>购进人：</strong><span>${buy.createBy }</span></p>
          <p><strong>购进日期：</strong><span><fmt:formatDate value="${buy.creationDate}" pattern="yyyy-MM-dd"/></span></p>
-         <p><strong>供应商：</strong><span>${buy.provider.proName }</span></p>
+         <p><strong>供应商：</strong><span>${buy.proName }</span></p>
          <p><strong>是否付款：</strong>
              <span>
          		<c:if test="${buy.isPayment == 1}">未付款</c:if>

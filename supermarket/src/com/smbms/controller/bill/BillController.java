@@ -4,6 +4,7 @@ import com.smbms.pojo.*;
 import com.smbms.service.bill.BillService;
 import com.smbms.service.buy.BuyService;
 import com.smbms.service.provider.ProviderService;
+import com.smbms.util.RequestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -36,22 +38,8 @@ public class BillController {
 	 */
 	/************************************************中文转码*********************************************************************/
 	public String bill(Model model,HttpServletRequest request) throws UnsupportedEncodingException{
-		String productCode=request.getParameter("productCode");
-		String pisPayment=request.getParameter("isPayment");
-		Integer isPayment=null;
-		if(productCode!=null){
-
-			request.setAttribute("productCode",productCode);
-		}
-
-		if(pisPayment!=null&&pisPayment!=""){
-			isPayment=Integer.parseInt(pisPayment);
-			if(isPayment==0){
-				isPayment=null;
-			}
-			request.setAttribute("isPayment", isPayment);
-		}
-
+	    //参数处理
+        Map<String,Object> params=RequestUtil.parseParams(request);
 
         Page page=new Page();
         String Page=request.getParameter("currentPage");
@@ -66,7 +54,6 @@ public class BillController {
         request.setAttribute("currentPage",currentPage);
 
 
-
         //权限控制，销售人员只能看到自己创建的订单
         User user= (User) request.getSession().getAttribute("userOnLogin");
         Integer id = null;
@@ -74,12 +61,13 @@ public class BillController {
             int role=user.getUserRole();
             if(role==2){
                 id=user.getId();
+                params.put("userId",id);
             }
         }
-		List<Bill> list=bs.findByNameIdAndIsPayment(productCode, isPayment,id,page);
-        request.setAttribute("totalPage",page.getTotalPage());
-        request.setAttribute("totalCount", page.getTotalCount());
-		model.addAttribute("billList", list);
+        PageBean pageBean=bs.findAllBillsByOrders(params, page);
+        request.setAttribute("totalPage",pageBean.getTotalPage());
+        request.setAttribute("totalCount", pageBean.getTotalSize());
+        request.setAttribute("billList", pageBean.getList());
 		return "bill/billlist";
 	}
 	/*
